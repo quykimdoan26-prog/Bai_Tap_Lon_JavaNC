@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.ucop.desktop.ui.LoginController"
+      alignment="CENTER" spacing="14" style="-fx-background-color: #f5f7fb;">
+    <padding><Insets top="30" right="45" bottom="30" left="45"/></padding>
+    <Label text="UCOP RETAIL" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1d3557;"/>
+    <Label text="Đăng nhập hệ thống quản lý bán lẻ"/>
+    <GridPane hgap="10" vgap="10">
+        <Label text="Tài khoản:" GridPane.rowIndex="0"/>
+        <TextField fx:id="usernameField" promptText="admin" GridPane.columnIndex="1"/>
+        <Label text="Mật khẩu:" GridPane.rowIndex="1"/>
+        <PasswordField fx:id="passwordField" promptText="Mật khẩu" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                       onAction="#login"/>
+    </GridPane>
+    <Button text="ĐĂNG NHẬP" onAction="#login" defaultButton="true"
+            style="-fx-background-color: #1d3557; -fx-text-fill: white;"/>
+    <Button text="Đăng ký tài khoản khách hàng" onAction="#openRegistration"/>
+    <Label fx:id="messageLabel" textFill="#b00020" wrapText="true"/>
+</VBox>

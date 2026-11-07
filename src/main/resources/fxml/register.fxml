@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.ucop.desktop.ui.RegisterController"
+      alignment="CENTER" spacing="10" style="-fx-background-color: #f5f7fb;">
+    <padding><Insets top="24" right="50" bottom="24" left="50"/></padding>
+    <Label text="TẠO TÀI KHOẢN KHÁCH HÀNG" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1d3557;"/>
+    <TextField fx:id="usernameField" promptText="Tên đăng nhập"/>
+    <PasswordField fx:id="passwordField" promptText="Mật khẩu tối thiểu 6 ký tự"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Nhập lại mật khẩu"/>
+    <TextField fx:id="fullNameField" promptText="Họ và tên"/>
+    <TextField fx:id="emailField" promptText="Email"/>
+    <TextField fx:id="phoneField" promptText="Số điện thoại"/>
+    <HBox spacing="8">
+        <Button text="ĐĂNG KÝ" onAction="#register" defaultButton="true"/>
+        <Button text="Quay lại đăng nhập" onAction="#backToLogin"/>
+    </HBox>
+    <Label fx:id="messageLabel" textFill="#b00020" wrapText="true"/>
+</VBox>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.ucop.desktop.ui.DashboardController">
+    <top><ToolBar>
+        <Label fx:id="welcomeLabel" text="UCOP RETAIL" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label fx:id="todayRevenueLabel" text="Doanh thu hôm nay: 0 VND"/>
+        <Button text="Làm mới" onAction="#refresh"/>
+        <Button text="Đăng xuất" onAction="#logout"/>
+    </ToolBar></top>
+    <center><TabPane tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Tổng quan">
+            <VBox spacing="8" style="-fx-padding: 14;">
+                <Label text="Doanh thu theo tháng" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <BarChart fx:id="revenueChart" VBox.vgrow="ALWAYS">
+                    <xAxis><CategoryAxis label="Tháng"/></xAxis><yAxis><NumberAxis label="VND"/></yAxis>
+                </BarChart>
+            </VBox>
+        </Tab>
+        <Tab fx:id="catalogTab" text="Danh mục &amp; sản phẩm">
+            <BorderPane style="-fx-padding: 12;">
+                <top><HBox spacing="6">
+                    <TextField fx:id="skuField" promptText="SKU"/>
+                    <TextField fx:id="nameField" promptText="Tên sản phẩm" prefWidth="220"/>
+                    <TextField fx:id="priceField" promptText="Giá"/>
+                    <ComboBox fx:id="categoryBox" promptText="Danh mục" prefWidth="170"/>
+                    <Button text="Lưu" onAction="#saveItem"/><Button text="Xóa" onAction="#deleteItem"/>
+                    <Button text="Nhập CSV" onAction="#importItems"/><Button text="Xuất CSV" onAction="#exportItems"/>
+                </HBox></top>
+                <bottom><HBox spacing="6" style="-fx-padding: 8 0 0 0;">
+                    <TextField fx:id="categoryNameField" promptText="Tên danh mục mới"/>
+                    <ComboBox fx:id="parentCategoryBox" promptText="Danh mục cha" prefWidth="170"/>
+                    <Button text="Lưu danh mục" onAction="#saveCategory"/>
+                </HBox></bottom>
+                <center><TableView fx:id="itemTable">
+                    <columns>
+                        <TableColumn fx:id="skuColumn" text="SKU" prefWidth="130"/>
+                        <TableColumn fx:id="nameColumn" text="Tên" prefWidth="280"/>
+                        <TableColumn fx:id="priceColumn" text="Giá" prefWidth="140"/>
+                        <TableColumn fx:id="statusColumn" text="Trạng thái" prefWidth="120"/>
+                    </columns>
+                </TableView></center>
+            </BorderPane>
+        </Tab>
+        <Tab fx:id="accountTab" text="Tài khoản &amp; phân quyền">
+            <BorderPane style="-fx-padding: 12;">
+                <top><HBox spacing="6">
+                    <TextField fx:id="accountUsernameField" promptText="Tên đăng nhập"/>
+                    <PasswordField fx:id="accountPasswordField" promptText="Mật khẩu"/>
+                    <ComboBox fx:id="accountRoleBox" promptText="Vai trò"/>
+                    <Button text="Lưu tài khoản" onAction="#saveAccount"/>
+                    <Button text="Khóa/Mở khóa" onAction="#toggleAccount"/>
+                </HBox></top>
+                <center><TableView fx:id="accountTable">
+                    <columns>
+                        <TableColumn fx:id="accountUserColumn" text="Tên đăng nhập" prefWidth="200"/>
+                        <TableColumn fx:id="accountRoleColumn" text="Vai trò" prefWidth="160"/>
+                        <TableColumn fx:id="accountStatusColumn" text="Trạng thái" prefWidth="150"/>
+                    </columns>
+                </TableView></center>
+            </BorderPane>
+        </Tab>
+        <Tab fx:id="inventoryTab" text="Kho &amp; tồn kho">
+            <VBox spacing="8" style="-fx-padding: 12;">
+                <HBox spacing="6">
+                    <TextField fx:id="warehouseCodeField" promptText="Mã kho"/>
+                    <TextField fx:id="warehouseNameField" promptText="Tên kho"/>
+                    <Button text="Thêm kho" onAction="#saveWarehouse"/>
+                </HBox>
+                <HBox spacing="6">
+                    <ComboBox fx:id="stockWarehouseBox" promptText="Kho" prefWidth="180"/>
+                    <ComboBox fx:id="stockItemBox" promptText="Sản phẩm" prefWidth="230"/>
+                    <TextField fx:id="stockOnHandField" promptText="Tồn thực tế"/>
+                    <TextField fx:id="stockReservedField" promptText="Đã giữ"/>
+                    <Button text="Lưu tồn kho" onAction="#saveStock"/>
+                </HBox>
+                <TableView fx:id="stockTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="stockItemColumn" text="Sản phẩm" prefWidth="270"/>
+                        <TableColumn fx:id="stockWarehouseColumn" text="Kho" prefWidth="150"/>
+                        <TableColumn fx:id="stockOnHandColumn" text="Tồn thực tế" prefWidth="120"/>
+                        <TableColumn fx:id="stockReservedColumn" text="Đã giữ" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+        <Tab fx:id="operationsTab" text="Đơn hàng &amp; thanh toán">
+            <VBox spacing="8" style="-fx-padding: 12;">
+                <HBox spacing="6">
+                    <ComboBox fx:id="statusBox" promptText="Trạng thái tiếp theo" prefWidth="180"/>
+                    <Button text="Chuyển trạng thái" onAction="#transitionOrder"/>
+                    <Button text="Xác nhận thanh toán" onAction="#confirmPayment"/>
+                    <TextField fx:id="refundAmountField" promptText="Số tiền hoàn"/>
+                    <Button text="Hoàn tiền" onAction="#refund"/>
+                </HBox>
+                <TableView fx:id="orderTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="orderIdColumn" text="Mã đơn" prefWidth="90"/>
+                        <TableColumn fx:id="orderCustomerColumn" text="Khách hàng" prefWidth="180"/>
+                        <TableColumn fx:id="orderStatusColumn" text="Trạng thái" prefWidth="180"/>
+                        <TableColumn fx:id="orderTotalColumn" text="Tổng tiền" prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+        <Tab fx:id="promotionTab" text="Khuyến mãi">
+            <VBox spacing="10" style="-fx-padding: 24;">
+                <Label text="Quản lý mã khuyến mãi" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <HBox spacing="6">
+                    <TextField fx:id="promotionCodeField" promptText="Mã khuyến mãi"/>
+                    <ComboBox fx:id="promotionTypeBox" promptText="Loại giảm" prefWidth="160"/>
+                    <TextField fx:id="promotionValueField" promptText="Giá trị"/>
+                    <Button text="Lưu khuyến mãi" onAction="#savePromotion"/>
+                </HBox>
+                <Label text="Giảm theo phần trăm dùng từ 1 đến 100; giảm cố định tính bằng VND."/>
+            </VBox>
+        </Tab>
+        <Tab fx:id="customerTab" text="Giỏ hàng &amp; đặt hàng">
+            <SplitPane orientation="VERTICAL" dividerPositions="0.55">
+                <VBox spacing="10" style="-fx-padding: 24;">
+                    <Label text="Giỏ hàng / Đặt hàng" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cartItemBox" promptText="Chọn sản phẩm"/>
+                    <TextField fx:id="cartQuantityField" promptText="Số lượng"/>
+                    <TextField fx:id="promotionField" promptText="Mã khuyến mãi"/>
+                    <ComboBox fx:id="paymentMethodBox" promptText="Phương thức thanh toán"/>
+                    <Button text="ĐẶT HÀNG" onAction="#placeOrder"
+                            style="-fx-background-color: #1d3557; -fx-text-fill: white;"/>
+                    <Label text="VAT 10% | Shipping 30.000 VND | Trạng thái ban đầu: PENDING_PAYMENT"/>
+                    <Separator/>
+                    <Label text="Đổi mật khẩu"/>
+                    <HBox spacing="6">
+                        <PasswordField fx:id="oldPasswordField" promptText="Mật khẩu hiện tại"/>
+                        <PasswordField fx:id="newPasswordField" promptText="Mật khẩu mới"/>
+                        <Button text="Đổi mật khẩu" onAction="#changePassword"/>
+                    </HBox>
+                    <Label fx:id="resultLabel" wrapText="true"/>
+                </VBox>
+                <VBox spacing="6" style="-fx-padding: 12;">
+                    <Label text="Đơn hàng của tôi" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <TableView fx:id="customerOrderTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="customerOrderIdColumn" text="Mã đơn" prefWidth="100"/>
+                            <TableColumn fx:id="customerOrderStatusColumn" text="Trạng thái" prefWidth="180"/>
+                            <TableColumn fx:id="customerOrderTotalColumn" text="Tổng tiền" prefWidth="160"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </SplitPane>
+        </Tab>
+    </TabPane></center>
+</BorderPane>
