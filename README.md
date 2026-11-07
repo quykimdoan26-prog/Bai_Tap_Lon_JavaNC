@@ -74,3 +74,7 @@ Tài khoản mẫu (đều dùng mật khẩu `password`):
 - ORM: Hibernate 5.6/JPA annotation; validation nghiệp vụ và ràng buộc SQL.
 
 Đề gốc ghi SQL Server, vì vậy project dùng dialect SQL Server và script `sqlserver_schema.sql`; file SQL đính kèm ban đầu có cú pháp MySQL nên không chạy trực tiếp trên SQL Server.
+
+
+
+
